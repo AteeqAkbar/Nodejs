@@ -1,13 +1,27 @@
 const express = require("express")
+
+const cors = require('cors')
+
 const app = express()
-//   app.use(foo)   //for globly use acess
+
+app.use(express.json())    ///requset snd string it convert all req to json
+
+
+//   app.use(foo)           //for globly use acess
+
+app.use(cors())            //to allow public api
+
 app.get("/", foo, (req, res) => {
 
     console.log("from /");
     // res.status(201).send("created")
+    // console.log(req.body.user);
+
+    // res.send(req.body.user)
+
     // res.send("Hello Get")
 
-    // res.send({ id: 2 })
+    res.json({ id: 2 })
 
     // console.log(req.query);            //http://localhost:3000/?page=2
 
