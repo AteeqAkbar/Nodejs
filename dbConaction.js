@@ -1,7 +1,9 @@
 const express = require("express")
 const mysql = require('mysql');
+const cors = require('cors')
 
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 var db = mysql.createConnection({
@@ -38,6 +40,8 @@ app.get("/:id", (req, res) => {
 
 })
 
+//////////////////////////////get data from brosser/////////////////////////////
+
 app.post("/singup", (req, res) => {
 
 
@@ -53,7 +57,30 @@ app.post("/singup", (req, res) => {
         res.send("Submit data")
     })
 
+
+    // db.query(`INSERT INTO users (name, email,password) VALUES ('${name}', '${email}','${password}')`, function (error, results, fields) {
+    //     if (error) console.log(error);
+    //     // throw error;
+    //     res.send("Submit data")
+    // })
+
 })
 
+//////////////////////////////get data from chrome/////////////////////////////
+
+app.post("/singin", (req, res) => {
+
+
+    const { email, password } = req.body
+
+    console.log("/singin");
+    console.log(email, password);
+    console.log(req.body.password);
+    res.json({ email: req.body.email })
+
+
+
+
+})
 
 app.listen(3000, console.log("server is run 3000 port"))
