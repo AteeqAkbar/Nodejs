@@ -6,14 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .showtable {
+            display: inline-grid;
+            width: 100%;
+            border: 1px solid;
+            margin: 0px;
+            padding: 10px;
+            background-color: #039688;
+            color: azure;
+            text-align: center;
+
+            height: 10%;
+        }
+    </style>
 </head>
 
 <body>
+
+    <div id="row">
+        <div id="cal1" class="showtable"><b>Name</b></div>
+    </div>
+
     <script>
         fetch("http://localhost:3000/")
             .then((response) => response.json())
             .then((res) => {
-                document.write(`<h1>${res.id}</h1>`)
+                // document.write(`<h1>${res[0].state}</h1>`)
+                res.forEach(element => {
+                    document.getElementById("row").innerHTML += `<div id="cal1" class="showtable">${element.name}</div>`
+
+                });
                 console.dir(res)
             }).catch((err) => {
                 console.log(err);
