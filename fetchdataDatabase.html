@@ -12,14 +12,20 @@
 
 <body>
 
-    <form>
-        <input type="email" name="email" placeholder="email">
-        <br>
-        <input type="password" name="password" placeholder="password">
-        <br>
-        <button type="submit">submit</button>
-
-    </form>
+    <div class="container">
+        <form>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 
 
 
@@ -39,8 +45,8 @@
                 headers: { "Content-Type": "application/json" }
             })
             const data = await res.json()
-            console.log(data.email)
-            // document.write(data.email)
+            console.log(data.name)
+            document.write("Email : " + data.email + "  Password : " + data.password, "  Name : " + data.name)
 
         })
 

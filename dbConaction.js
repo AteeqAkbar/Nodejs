@@ -74,9 +74,19 @@ app.post("/singin", (req, res) => {
     const { email, password } = req.body
 
     console.log("/singin");
-    console.log(email, password);
-    console.log(req.body.password);
-    res.json({ email: req.body.email })
+    // console.log(email, password);
+    // console.log(req.body.password);
+
+    // res.json({ email: req.body.email })
+
+    db.query(`SELECT * FROM users WHERE email='${email}'&& password='${password}'`, function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        res.send(results[0])
+
+
+
+    })
 
 
 
