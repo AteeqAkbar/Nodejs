@@ -15,6 +15,7 @@
     <div class="container">
         <form>
             <div class="mb-3">
+                <h1 style="text-align: center;">Login</h1>
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" name="email">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
@@ -23,7 +24,8 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" class="form-control" id="exampleInputPassword1" name="password">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button><br>
+            <h2><a href="singindb.html">Register</a></h2>
         </form>
     </div>
 
@@ -36,17 +38,26 @@
             e.preventDefault();
             const email = frm.email.value;
             const password = frm.password.value;
-            console.log(email);
+            // console.log(email);
 
             console.log("with in from");
             const res = await fetch("http://localhost:3000/singin", {
                 method: "post",
-                body: JSON.stringify({ email: email, password: password }),
+                body: JSON.stringify({
+
+                    email: email, password: password
+                }),
                 headers: { "Content-Type": "application/json" }
             })
-            const data = await res.json()
-            console.log(data.name)
-            document.write("Email : " + data.email + "  Password : " + data.password, "  Name : " + data.name)
+            const server = await res.json()
+            console.log(server)
+            if (server.login) {
+                document.write("<h1>Welecome Back </h1><br>" + "  <br>Name : " + server.data.name + "<br>Email : " + server.data.email + "  <br>Password : " + server.data.password,)
+
+            } else {
+                document.write("<h1 style='text-align: center;'>Plase enter Corect Email and Password</h1>")
+
+            }
 
         })
 

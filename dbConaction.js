@@ -1,6 +1,7 @@
 const express = require("express")
 const mysql = require('mysql');
-const cors = require('cors')
+const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const app = express()
 app.use(cors())
@@ -26,35 +27,48 @@ db.connect(function (err) {
 });
 
 
-app.get("/:id", (req, res) => {
-    const id = req.params.id
-    console.log("from /");
+// app.get("/:id", (req, res) => {
+//     const id = req.params.id
+//     console.log("from /");
 
 
-    db.query(`SELECT * FROM users WHERE ID=${id} `, function (error, results, fields) {
-        if (error) throw error;
-        console.log('The user is: ', results[0]);
-        res.send(results)
-    });
+//     db.query(`SELECT * FROM users WHERE ID=${id} `, function (error, results, fields) {
+//         if (error) throw error;
+//         console.log('The user is: ', results[0]);
+//         res.send(results)
+//     });
 
 
-})
+// })
 
 //////////////////////////////get data from brosser/////////////////////////////
 
-app.post("/singup", (req, res) => {
+app.post("/singup", async (req, res) => {
 
 
     const { name, email, password } = req.body
 
     console.log("/singup");
-    console.log(email, password);
+    console.log(email, password, name);
 
+    const crypt = await bcrypt.hash(password, 13);  ////for encryption of password
+    console.log(crypt);
+    const pass = await bcrypt.compare(password, crypt);
+    console.log(pass);
 
-    var user = { "name": name, "email": email, "password": password }
+    var user = { "name": name, "email": email, "password": crypt }
 
     db.query(`INSERT INTO  users SET ?`, user, function (error, results, fields) {
-        res.send("Submit data")
+        if (error) throw error;
+        else {
+            console.log(results);
+            // res.send(results[0]);
+            res.status(200).json({
+                name: user.name,
+                email: user.email,
+                massage: "welecome to Our site"
+            });
+        }
     })
 
 
@@ -72,24 +86,38 @@ app.post("/singin", (req, res) => {
 
 
     const { email, password } = req.body
-
-    console.log("/singin");
     // console.log(email, password);
     // console.log(req.body.password);
 
     // res.json({ email: req.body.email })
+    db.query(`SELECT * FROM users WHERE email='${email}'`, async function (error, results, fields) {
+        if (error) throw error;
 
-    db.query(`SELECT * FROM users WHERE email='${email}'&& password='${password}'`, function (error, results, fields) {
+        console.log(results[0]);
+
+        const pass = await bcrypt.compare(password, results[0].password);
+
+        console.log(pass);
+        if (pass) {
+            res.send({ login: pass, data: results[0] })
+        } else res.send({
+            login: pass,
+            massage: "please enter correct email and password  "
+        })
+
+    })
+})
+
+
+app.get("/admin", (req, res) => {
+    console.log("/admin");
+
+    db.query(`SELECT * FROM users`, function (error, results, fields) {
         if (error) throw error;
         console.log(results);
         res.send(results[0])
 
-
-
     })
-
-
-
 
 })
 
