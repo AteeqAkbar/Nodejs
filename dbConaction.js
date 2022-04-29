@@ -102,7 +102,7 @@ app.post("/singin", (req, res) => {
             res.send({ login: pass, data: results[0] })
         } else res.send({
             login: pass,
-            massage: "please enter correct email and password  "
+            massage: "please enter correct email     and password  "
         })
 
     })
